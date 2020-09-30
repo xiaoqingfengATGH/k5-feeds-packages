@@ -1,12 +1,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=prometheus
-PKG_VERSION:=2.15.2
-PKG_RELEASE:=1
+PKG_VERSION:=2.21.0
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/prometheus/prometheus/tar.gz/v${PKG_VERSION}?
-PKG_HASH:=42cc464ffcede82d077be10e0b5cf6eff6bf62ed2b85cc5cb4ae9be73b7ed245
+PKG_HASH:=afafed1be631a53ada60e2b2f12cfdb51dcaee5e539fb65e9983f3276c99f5af
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
@@ -18,6 +18,13 @@ PKG_USE_MIPS16:=0
 
 GO_PKG:=github.com/prometheus/prometheus/
 GO_PKG_BUILD_PKG:=github.com/prometheus/prometheus/cmd/prometheus/
+
+GO_PKG_LDFLAGS_X:=\
+	github.com/prometheus/common/version.Version=v$(PKG_VERSION) \
+	github.com/prometheus/common/version.Revision=$(PKG_VERSION)  \
+	github.com/prometheus/common/version.Branch="release" \
+	github.com/prometheus/common/version.BuildUser=openwrt \
+	github.com/prometheus/common/version.BuildDate=$(SOURCE_DATE_EPOCH)
 
 include $(INCLUDE_DIR)/package.mk
 include ../../lang/golang/golang-package.mk
