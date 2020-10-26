@@ -8,11 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=python-pytest
-PKG_VERSION:=6.0.2
+PKG_VERSION:=6.1.1
 PKG_RELEASE:=1
 
 PYPI_NAME:=pytest
-PKG_HASH:=c8f57c2a30983f469bf03e68cdfa74dc474ce56b8f280ddcb080dfd91df01043
+PKG_HASH:=8f593023c1a0f916110285b6efd7f99db07d59546e3d8c36fc60e2ab05d3be92
 
 PKG_MAINTAINER:=Jan Pavlinec <jan.pavlinec@nic.cz>
 PKG_LICENSE:=MIT

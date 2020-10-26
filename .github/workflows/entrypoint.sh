@@ -4,22 +4,29 @@ mkdir -p /var/lock/
 
 opkg update
 
+[ -n "$CI_HELPER" ] || CI_HELPER="/ci/.github/workflows/ci_helpers.sh"
+
 for PKG in /ci/*.ipk; do
 	tar -xzOf "$PKG" ./control.tar.gz | tar xzf - ./control 
 	# package name including variant
 	PKG_NAME=$(sed -ne 's#^Package: \(.*\)$#\1#p' ./control)
 	# package version without release
 	PKG_VERSION=$(sed -ne 's#^Version: \(.*\)-[0-9]*$#\1#p' ./control)
+	# package source contianing test.sh script
+	PKG_SOURCE=$(sed -ne 's#^Source: .*/\(.*\)$#\1#p' ./control)
 
-	echo "Testing package $PKG_NAME ($PKG_VERSION)"
+	echo "Testing package $PKG_NAME in version $PKG_VERSION from $PKG_SOURCE"
 
 	opkg install "$PKG"
 
-	TEST_SCRIPT=$(find /ci/ -name "$PKG_NAME" -type d)/test.sh
+	export PKG_NAME PKG_VERSION CI_HELPER
+
+	TEST_SCRIPT=$(find /ci/ -name "$PKG_SOURCE" -type d)/test.sh
+
 	if [ -f "$TEST_SCRIPT" ]; then
 		echo "Use package specific test.sh"
 		if sh "$TEST_SCRIPT" "$PKG_NAME" "$PKG_VERSION"; then
-			echo "Test successfull"
+			echo "Test succesful"
 		else
 			echo "Test failed"
 			exit 1

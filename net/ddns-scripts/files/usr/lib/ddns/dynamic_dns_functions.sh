@@ -317,19 +317,18 @@ urlencode() {
 }
 
 # extract url or script for given DDNS Provider from
-# directory /usr/share/ddns/services/ipv4/ for IPv4
-# or from
-# directory /usr/share/ddns/services/ipv6/ for IPv6
 # $1	Name of the provider
-# $1	Name of Variable to store url to
-# $2	Name of Variable to store script to
-# $3	Name of Variable to store service answer to
+# $2	Provider directory
+# $3	Name of Variable to store url to
+# $4	Name of Variable to store script to
+# $5	Name of Variable to store service answer to
 get_service_data() {
 	local provider="$1"
 	shift
+	local dir="$1"
+	shift
 
 	. /usr/share/libubox/jshn.sh
-	local dir="/usr/share/ddns/services"
 	local name data url answer script
 
 	[ $# -ne 3 ] && write_log 12 "Error calling 'get_service_data()' - wrong number of parameters"
@@ -707,6 +706,9 @@ do_transfer() {
 	local __PROG  __RUNPROG
 
 	[ $# -ne 1 ] && write_log 12 "Error in 'do_transfer()' - wrong number of parameters"
+
+	# Use ip_network as default for bind_network if not separately specified
+	[ -z "$bind_network" ] && [ "$ip_source" = "network" ] && [ "$ip_network" ] && bind_network="$ip_network"
 
 	# lets prefer GNU Wget because it does all for us - IPv4/IPv6/HTTPS/PROXY/force IP version
 	if [ -n "$WGET_SSL" -a $USE_CURL -eq 0 ]; then 			# except global option use_curl is set to "1"

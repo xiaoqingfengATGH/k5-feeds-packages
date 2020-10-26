@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mariadb
-PKG_VERSION:=10.4.13
-PKG_RELEASE:=3
+PKG_VERSION:=10.4.14
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL := \
@@ -18,7 +18,7 @@ PKG_SOURCE_URL := \
 	https://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/$(PKG_NAME)-$(PKG_VERSION)/source \
 	https://downloads.mariadb.org/interstitial/$(PKG_NAME)-$(PKG_VERSION)/source
 
-PKG_HASH:=45bbbb12d1de8febd9edf630e940c23cf14efd60570c743b268069516a5d91df
+PKG_HASH:=f92fcd59e0122461482f28c67c5ea01c7cf6979494a571db68074396864c86fc
 PKG_MAINTAINER:=Michal Hrusecky <Michal@Hrusecky.net>
 PKG_LICENSE:=GPL-2.0
 PKG_LICENSE_FILES:=COPYING THIRDPARTY
@@ -137,8 +137,7 @@ MARIADB_SERVER := \
 	mysql_install_db \
 	mysql_upgrade \
 	mysqladmin \
-	mysqld \
-	mysqld_safe
+	mysqld
 
 MARIADB_SERVER_EXTRA := \
 	aria_chk \
@@ -157,6 +156,7 @@ MARIADB_SERVER_EXTRA := \
 	mysql_setpermission \
 	mysql_tzinfo_to_sql \
 	mysqld_multi \
+	mysqld_safe \
 	mysqld_safe_helper \
 	mysqldumpslow \
 	mysqlhotcopy \
@@ -380,7 +380,7 @@ CMAKE_OPTIONS += \
 	-DINSTALL_SQLBENCHDIR="" \
 	-DINSTALL_SUPPORTFILESDIR=share/mariadb \
 	-DINSTALL_UNIX_ADDRDIR=$(MARIADB_SOCKET) \
-	-DMYSQL_DATADIR=/var/lib/mysql \
+	-DMYSQL_DATADIR=/srv/mysql \
 	-DMYSQL_UNIX_ADDR=$(MARIADB_SOCKET) \
 	-DSKIP_TESTS=ON \
 	-DWITH_DEBUG=OFF \
